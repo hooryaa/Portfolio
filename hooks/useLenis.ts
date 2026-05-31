@@ -1,7 +1,8 @@
 'use client'
 
-import { useEffect } from 'react'
-import type { Lenis as LenisType } from 'lenis'
+import { useEffect, useRef } from 'react'
+
+type LenisType = InstanceType<typeof import('lenis').default>
 
 /**
  * Client-only Lenis smooth-scroll hook.
@@ -9,9 +10,10 @@ import type { Lenis as LenisType } from 'lenis'
  * and cleans up both the RAF loop and Lenis instance safely.
  */
 export function useLenis() {
+  const lenisRef = useRef<LenisType | null>(null)
+
   useEffect(() => {
-    let lenis: LenisType | null = null
-    let rafId: number | null = null
+    let frameId: number | null = null
     let removeScrollListener: (() => void) | null = null
 
     async function init() {
@@ -25,7 +27,7 @@ export function useLenis() {
         const { gsap } = gsapMod
         gsap.registerPlugin(ScrollTrigger)
 
-        lenis = new Lenis({
+        const lenis = new Lenis({
           duration: 1.6,
           easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
           orientation: 'vertical',
@@ -34,16 +36,17 @@ export function useLenis() {
           touchMultiplier: 1.4,
         })
 
+        lenisRef.current = lenis
         removeScrollListener = lenis.on('scroll', () => {
           ScrollTrigger.update()
         })
 
-        const frame = (time: number) => {
-          lenis?.raf(time)
-          rafId = requestAnimationFrame(frame)
+        const raf = (time: number) => {
+          lenisRef.current?.raf(time)
+          frameId = requestAnimationFrame(raf)
         }
 
-        rafId = requestAnimationFrame(frame)
+        frameId = requestAnimationFrame(raf)
         ScrollTrigger.refresh()
       } catch (error) {
         console.warn('Lenis init failed, using native scroll', error)
@@ -53,11 +56,11 @@ export function useLenis() {
     init()
 
     return () => {
-      if (rafId !== null) {
-        cancelAnimationFrame(rafId)
+      if (frameId !== null) {
+        cancelAnimationFrame(frameId)
       }
       removeScrollListener?.()
-      lenis?.destroy()
+      lenisRef.current?.destroy()
     }
   }, [])
 }
