@@ -115,7 +115,7 @@ export default function SurveillanceIntro() {
         {/* Roles */}
         <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ delay:4.4, duration:1.5 }}
           className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 mt-8">
-          {['Software Engineer','Interactive Systems','AI Tooling','Storytelling Architectures'].map((item, i) => (
+          {['Software Engineer','Data Analysis','AI Tooling','Full Stack'].map((item, i) => (
             <span key={item} className="flex items-center gap-2">
               {i > 0 && <span className="text-blood/40">•</span>}
               <span className="font-mono text-[11px] tracking-widest uppercase"
