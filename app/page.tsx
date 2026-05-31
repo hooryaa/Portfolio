@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import GrainOverlay from '@/components/ui/GrainOverlay'
 import Navigation   from '@/components/layout/Navigation'
 import BootSequence from '@/components/sections/BootSequence'
+import { useLenis } from '@/hooks/useLenis'
 
 // Minimal height-preserving skeleton — prevents layout shift while sections load
 function SectionSkeleton({ height = 'min-h-screen' }: { height?: string }) {
@@ -20,38 +21,6 @@ const TimelineInvestigation  = dynamic(() => import('@/components/sections/Timel
 const ObservationLogs        = dynamic(() => import('@/components/sections/ObservationLogs'),        { ssr:false, loading:() => <SectionSkeleton height="min-h-[80vh]" /> })
 const HiddenClues            = dynamic(() => import('@/components/sections/HiddenClues'),            { ssr:false, loading:() => <SectionSkeleton height="min-h-[80vh]" /> })
 const ContactTerminal        = dynamic(() => import('@/components/sections/ContactTerminal'),        { ssr:false, loading:() => <SectionSkeleton height="min-h-[70vh]" /> })
-
-// ── Lenis smooth scroll — pure side effect, no state ──────────────────────
-function useLenis() {
-  useEffect(() => {
-    let lenis: { raf:(t:number)=>void; destroy:()=>void; on:(e:string,cb:unknown)=>void } | null = null
-    async function init() {
-      try {
-        const [{ default: Lenis }, { gsap }, { ScrollTrigger }] = await Promise.all([
-          import('lenis'),
-          import('gsap'),
-          import('gsap/ScrollTrigger'),
-        ])
-        gsap.registerPlugin(ScrollTrigger)
-        lenis = new Lenis({
-          duration: 1.6,
-          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-          orientation: 'vertical',
-          smoothWheel: true,
-          wheelMultiplier: 0.75,
-          touchMultiplier: 1.4,
-        })
-        lenis.on('scroll', ScrollTrigger.update)
-        gsap.ticker.add((time: number) => lenis!.raf(time * 1000))
-        gsap.ticker.lagSmoothing(0)
-      } catch (e) {
-        console.warn('Lenis init failed, using native scroll', e)
-      }
-    }
-    init()
-    return () => { lenis?.destroy() }
-  }, [])
-}
 
 // ── Scroll progress bar — ref-based, zero re-renders ──────────────────────
 function ScrollProgress() {

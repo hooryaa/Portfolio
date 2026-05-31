@@ -1,57 +1,63 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
+import type { Lenis as LenisType } from 'lenis'
 
-/** Initializes Lenis smooth scroll and wires it to GSAP ScrollTrigger */
+/**
+ * Client-only Lenis smooth-scroll hook.
+ * Dynamically imports Lenis and GSAP, wires ScrollTrigger update,
+ * and cleans up both the RAF loop and Lenis instance safely.
+ */
 export function useLenis() {
-  const lenisRef = useRef<unknown>(null)
-
   useEffect(() => {
-    let lenis: {
-      raf: (time: number) => void
-      destroy: () => void
-      on: (event: string, cb: unknown) => void
-    } | null = null
-    let rafId: number
+    let lenis: LenisType | null = null
+    let rafId: number | null = null
+    let removeScrollListener: (() => void) | null = null
 
     async function init() {
-      // Dynamic import to avoid SSR issues
-      const [{ default: Lenis }, gsapMod] = await Promise.all([
-        import('lenis'),
-        import('gsap'),
-      ])
-      const { gsap } = gsapMod
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger')
-      gsap.registerPlugin(ScrollTrigger)
+      try {
+        const [{ default: Lenis }, gsapMod, { ScrollTrigger }] = await Promise.all([
+          import('lenis'),
+          import('gsap'),
+          import('gsap/ScrollTrigger'),
+        ])
 
-      lenis = new Lenis({
-        duration: 1.4,
-        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        orientation: 'vertical',
-        smoothWheel: true,
-        wheelMultiplier: 0.8,
-        touchMultiplier: 1.5,
-      })
+        const { gsap } = gsapMod
+        gsap.registerPlugin(ScrollTrigger)
 
-      // Keep GSAP ScrollTrigger in sync
-      lenis.on('scroll', ScrollTrigger.update)
+        lenis = new Lenis({
+          duration: 1.6,
+          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          orientation: 'vertical',
+          smoothWheel: true,
+          wheelMultiplier: 0.75,
+          touchMultiplier: 1.4,
+        })
 
-      // GSAP ticker drives Lenis RAF
-      gsap.ticker.add((time: number) => {
-        lenis!.raf(time * 1000)
-      })
-      gsap.ticker.lagSmoothing(0)
+        removeScrollListener = lenis.on('scroll', () => {
+          ScrollTrigger.update()
+        })
 
-      lenisRef.current = lenis
+        const frame = (time: number) => {
+          lenis?.raf(time)
+          rafId = requestAnimationFrame(frame)
+        }
+
+        rafId = requestAnimationFrame(frame)
+        ScrollTrigger.refresh()
+      } catch (error) {
+        console.warn('Lenis init failed, using native scroll', error)
+      }
     }
 
     init()
 
     return () => {
-      if (rafId) cancelAnimationFrame(rafId)
-      if (lenis) lenis.destroy()
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId)
+      }
+      removeScrollListener?.()
+      lenis?.destroy()
     }
   }, [])
-
-  return lenisRef
 }
