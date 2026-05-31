@@ -27,8 +27,8 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: 'HOORIA AMIR — Classified Archive',
-  description: 'Software Engineer specializing in Interactive Systems, AI Tooling, and Storytelling Architectures. Access restricted.',
-  keywords: ['portfolio','software engineer','interactive systems','AI tooling','Next.js','TypeScript'],
+  description: 'Software Engineer specializing in Data Engineering, AI Tooling, and Storytelling Architectures. Access restricted.',
+  keywords: ['portfolio','software engineer','Data Engineering','AI tooling','Next.js','TypeScript'],
   authors: [{ name: 'Hooria Amir' }],
   creator: 'Hooria Amir',
   robots: { index: true, follow: true },
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     title: 'HOORIA AMIR — Classified Archive',
-    description: 'Software Engineer · Interactive Systems · AI Tooling · Storytelling Architectures',
+    description: 'Software Engineer · Data Engineering · AI Tooling · Business Intelligence · Full-Stack Interactive Systems',
     siteName: 'Hooria Amir Portfolio',
     // REPLACE: add your real OG image at /public/og-image.jpg (1200×630)
     images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Hooria Amir — Classified Archive' }],
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'HOORIA AMIR — Classified Archive',
-    description: 'Software Engineer · Interactive Systems · AI Tooling',
+    description: 'Software Engineer · Data Engineering · AI Tooling · Business Intelligence · Full-Stack Interactive Systems',
     // REPLACE: your Twitter handle
     creator: '@hooria',
     images: ['/og-image.jpg'],
