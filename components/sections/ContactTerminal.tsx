@@ -95,7 +95,7 @@ export default function ContactTerminal() {
               <img src="/images/profile.jpg" alt="Profile picture" className="w-20 h-20 rounded-full object-cover border" style={{ borderColor:'rgba(214,198,165,0.06)' }} />
               <div>
                 <div className="font-serif italic text-2xl text-ivory leading-none">Hooria Amir</div>
-                <div className="font-mono text-[10px] text-stone/30 tracking-widest">Frontend Engineer · Open to work</div>
+                <div className="font-mono text-[10px] text-stone/30 tracking-widest">Software Engineer · Open to work</div>
               </div>
             </div>
 
