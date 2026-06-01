@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next'
+import { Analytics } from '@vercel/analytics/next'
 import { Space_Grotesk, Cormorant_Garamond, Space_Mono } from 'next/font/google'
 import './globals.css'
 
@@ -69,6 +70,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Skip to content for keyboard users */}
         <a href="#main-content" className="skip-link">Skip to content</a>
         {children}
+        <Analytics />
       </body>
     </html>
   )
