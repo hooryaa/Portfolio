@@ -42,7 +42,9 @@ export default function Navigation() {
     const ids = NAV_ITEMS.map(n => n.href)
 
     const updateActiveByCenter = () => {
-      const els = ids.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[]
+      const els = ids
+        .map(id => document.getElementById(id))
+        .filter((el): el is HTMLElement => el !== null)
       if (!els.length) return
       const winCenter = window.innerHeight / 2
       let nearest: HTMLElement | null = null
