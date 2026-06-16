@@ -47,14 +47,16 @@ export default function Navigation() {
         .filter((el): el is HTMLElement => el !== null)
       if (!els.length) return
       const winCenter = window.innerHeight / 2
-      let nearest: HTMLElement | null = null
-      let minDist = Infinity
-      els.forEach(el => {
+      const nearest = els.reduce<HTMLElement | null>((closest, el) => {
         const r = el.getBoundingClientRect()
         const center = r.top + r.height / 2
         const dist = Math.abs(center - winCenter)
-        if (dist < minDist) { minDist = dist; nearest = el }
-      })
+        if (!closest) return el
+        const closestRect = closest.getBoundingClientRect()
+        const closestCenter = closestRect.top + closestRect.height / 2
+        const closestDist = Math.abs(closestCenter - winCenter)
+        return dist < closestDist ? el : closest
+      }, null)
       if (nearest && activeRef.current !== nearest.id) {
         activeRef.current = nearest.id
         setActive(nearest.id)
