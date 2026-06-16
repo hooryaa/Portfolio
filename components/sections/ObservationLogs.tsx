@@ -73,18 +73,18 @@ export default function ObservationLogs() {
           initial={{ opacity:0, y:30 }} animate={inView ? { opacity:1, y:0 } : {}}
           transition={{ duration:1, ease:[0.16,1,0.3,1] }} className="mb-16 md:mb-20">
           <p className="font-mono text-[10px] tracking-[0.4em] uppercase mb-4"
-            style={{ color:'rgba(184,165,138,0.65)' }}>
+            style={{ color:'#D6C6A5' }}>
             ◈ OBSERVATION LOGS — FIELD NOTES
           </p>
           <h2 className="font-serif italic text-5xl md:text-7xl text-ivory leading-none">
             How I{' '}
             <span className="not-italic font-sans font-light tracking-tighter"
-              style={{ color:'rgba(184,165,138,0.6)' }}>
+              style={{ color:'#D6C6A5' }}>
               Think
             </span>
           </h2>
           <p className="mt-4 font-serif italic text-lg max-w-lg leading-relaxed"
-            style={{ color:'rgba(183,176,165,0.5)' }}>
+            style={{ color:'#D6C6A5' }}>
             Fragments from an ongoing investigation into craft, technology, and the space between them.
           </p>
         </motion.div>

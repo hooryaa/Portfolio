@@ -39,6 +39,18 @@ export default function TimelineInvestigation() {
   }
   const onMouseUp = () => setIsDragging(false)
 
+  // Touch support
+  const onTouchStart = (e: React.TouchEvent) => {
+    const el = trackRef.current; if (!el) return
+    setIsDragging(true)
+    dragStart.current = { x: e.touches[0].pageX, scrollLeft: el.scrollLeft }
+  }
+  const onTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || !trackRef.current) return
+    trackRef.current.scrollLeft = dragStart.current.scrollLeft - (e.touches[0].pageX - dragStart.current.x)
+  }
+  const onTouchEnd = () => setIsDragging(false)
+
   const scrollToIdx = (idx: number) => {
     const clamped = Math.max(0, Math.min(EVENTS.length - 1, idx))
     setActiveIdx(clamped)
@@ -50,11 +62,30 @@ export default function TimelineInvestigation() {
   useEffect(() => {
     const el = trackRef.current; if (!el) return
     const onScroll = () => {
-      const idx = Math.round((el.scrollLeft / el.scrollWidth) * EVENTS.length)
-      setActiveIdx(Math.min(EVENTS.length - 1, Math.max(0, idx)))
+      const cards = Array.from(el.querySelectorAll('[data-card]')) as HTMLElement[]
+      if (!cards.length) return
+      const center = el.scrollLeft + el.clientWidth / 2
+      let nearest = 0
+      let nearestDist = Infinity
+      cards.forEach((card, i) => {
+        const cardCenter = card.offsetLeft + card.offsetWidth / 2
+        const dist = Math.abs(cardCenter - center)
+        if (dist < nearestDist) { nearestDist = dist; nearest = i }
+      })
+      setActiveIdx(Math.max(0, Math.min(EVENTS.length - 1, nearest)))
     }
     el.addEventListener('scroll', onScroll, { passive:true })
-    return () => el.removeEventListener('scroll', onScroll)
+    // initialize
+    onScroll()
+
+    // Resize observer to recalc nearest on layout changes
+    const ro = new ResizeObserver(() => onScroll())
+    ro.observe(el)
+
+    return () => {
+      el.removeEventListener('scroll', onScroll)
+      ro.disconnect()
+    }
   }, [])
 
   return (
@@ -62,7 +93,7 @@ export default function TimelineInvestigation() {
       className="relative py-24 md:py-36 overflow-hidden"
       style={{ background:'#0D1B2A' }}
     >
-      <div className="absolute inset-0 investigation-grid opacity-15 pointer-events-none" />
+      <div className="absolute inset-0 investigation-grid opacity-30 pointer-events-none" />
       <div className="glow-blob w-96 h-96 absolute top-1/2 -translate-y-1/2 right-1/4"
         style={{ background:'rgba(74,16,16,0.2)' }} />
 
@@ -73,22 +104,22 @@ export default function TimelineInvestigation() {
           className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-5">
           <div>
             <p className="font-mono text-[10px] tracking-[0.4em] uppercase mb-3"
-              style={{ color:'rgba(184,165,138,0.7)' }}>
+              style={{ color:'#D6C6A5' }}>
               ◈ INVESTIGATIVE TIMELINE
             </p>
             <h2 className="font-serif italic text-5xl md:text-7xl text-ivory leading-none">
               The{' '}
               <span className="not-italic font-sans font-light tracking-tighter"
-                style={{ color:'rgba(184,165,138,0.65)' }}>
+                style={{ color:'#D6C6A5' }}>
                 Journey
               </span>
             </h2>
           </div>
           <div className="flex items-center gap-3">
-            <button onClick={() => scrollToIdx(activeIdx - 1)} disabled={activeIdx === 0}
+              <button onClick={() => scrollToIdx(activeIdx - 1)} disabled={activeIdx === 0}
               className="dossier-card w-10 h-10 flex items-center justify-center rounded-sm transition-all disabled:opacity-20 disabled:cursor-not-allowed"
               aria-label="Previous milestone">
-              <ChevronLeft size={15} style={{ color:'rgba(214,198,165,0.6)' }} />
+              <ChevronLeft size={15} style={{ color:'#D6C6A5' }} />
             </button>
             {EVENTS.map((_, i) => (
               <button key={`dot-${i}`} onClick={() => scrollToIdx(i)}
@@ -104,7 +135,7 @@ export default function TimelineInvestigation() {
             <button onClick={() => scrollToIdx(activeIdx + 1)} disabled={activeIdx === EVENTS.length - 1}
               className="dossier-card w-10 h-10 flex items-center justify-center rounded-sm transition-all disabled:opacity-20 disabled:cursor-not-allowed"
               aria-label="Next milestone">
-              <ChevronRight size={15} style={{ color:'rgba(214,198,165,0.6)' }} />
+              <ChevronRight size={15} style={{ color:'#D6C6A5' }} />
             </button>
           </div>
         </motion.div>
@@ -165,7 +196,7 @@ export default function TimelineInvestigation() {
                       </div>
                       <p className="font-mono text-[9px] text-stone/30 tracking-widest uppercase mb-2">{event.label}</p>
                       <h3 className="font-sans font-semibold text-sm text-ivory/90 mb-2 leading-tight">{event.title}</h3>
-                      <p className="font-serif italic text-sm leading-relaxed" style={{ color:'rgba(183,176,165,0.55)' }}>{event.desc}</p>
+                      <p className="font-serif italic text-sm leading-relaxed" style={{ color:'#D6C6A5' }}>{event.desc}</p>
                     </div>
                   </motion.div>
 
@@ -186,7 +217,7 @@ export default function TimelineInvestigation() {
         </div>
 
         <div className="mt-8 rounded-sm border border-stone/10 bg-[#071119] p-6">
-          <p className="font-mono text-[9px] tracking-[0.4em] uppercase mb-4" style={{ color:'rgba(184,165,138,0.7)' }}>
+          <p className="font-mono text-[9px] tracking-[0.4em] uppercase mb-4" style={{ color:'#D6C6A5' }}>
             ACTIVITIES DURING THE UNIVERSITY ERA
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

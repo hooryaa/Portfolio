@@ -125,8 +125,8 @@ export default function BootSequence({ onComplete }: Props) {
                 className="w-1.5 h-1.5 rounded-full animate-pulse"
                 style={{ background:'#7A1E1E', boxShadow:'0 0 6px rgba(122,30,30,0.8)' }}
               />
-              <span className="font-mono text-[9px] tracking-[0.4em] uppercase"
-                style={{ color:'rgba(183,176,165,0.45)' }}>
+                <span className="font-mono text-[9px] tracking-[0.4em] uppercase"
+                style={{ color:'#D6C6A5' }}>
                 CLASSIFIED SYSTEM v4.7.2
               </span>
             </div>
@@ -140,25 +140,25 @@ export default function BootSequence({ onComplete }: Props) {
                 <div className="w-2.5 h-2.5 rounded-full" style={{ background:'rgba(166,58,58,0.35)' }} />
                 <div className="w-2.5 h-2.5 rounded-full" style={{ background:'rgba(214,198,165,0.12)' }} />
                 <span className="font-mono text-[9px] ml-2 tracking-widest"
-                  style={{ color:'rgba(123,116,106,0.35)' }}>
+                  style={{ color:'#D6C6A5' }}>
                   ARCHIVE_SYSTEM — bash
                 </span>
               </div>
 
               {/* Lines */}
               <div className="space-y-1.5" style={{ minHeight: '132px' }}>
-                {lines.map((line, i) => (
+                {lines.slice(0, lineIdx).map((line, i) => (
                   <div key={`l${i}`} className="flex items-start gap-2">
-                    <span className="font-mono text-xs shrink-0" style={{ color:'rgba(122,30,30,0.55)' }}>›</span>
-                    <span className="font-mono text-[12px]" style={{ color:'rgba(198,186,168,0.88)' }}>{line}</span>
+                    <span className="font-mono text-xs shrink-0" style={{ color:'#D6C6A5' }}>›</span>
+                    <span className="font-mono text-[12px]" style={{ color:'#D6C6A5' }}>{line}</span>
                   </div>
                 ))}
                 {/* Active typing line with cursor */}
                 {phase === 'boot' && lineIdx < BOOT_LINES.length && (
                   <div className="flex items-start gap-2">
-                    <span className="font-mono text-xs shrink-0" style={{ color:'rgba(122,30,30,0.55)' }}>›</span>
-                    <span className="font-mono text-[12px]" style={{ color:'rgba(198,186,168,0.88)' }}>
-                      {lines[lineIdx] ?? ''}
+                    <span className="font-mono text-xs shrink-0" style={{ color:'#D6C6A5' }}>›</span>
+                    <span className="font-mono text-[12px]" style={{ color:'#D6C6A5' }}>
+                      {lines[lineIdx] ?? BOOT_LINES[lineIdx] ?? ''}
                       <span className="cursor-blink" style={{ color:'#D6C6A5' }}>█</span>
                     </span>
                   </div>
@@ -169,10 +169,10 @@ export default function BootSequence({ onComplete }: Props) {
             {/* Progress bar */}
             <div className="mb-8">
               <div className="flex justify-between mb-2">
-                <span className="font-mono text-[9px] tracking-widest" style={{ color:'rgba(123,116,106,0.5)' }}>
+                <span className="font-mono text-[9px] tracking-widest" style={{ color:'#D6C6A5' }}>
                   DECRYPTING
                 </span>
-                <span ref={pctRef} className="font-mono text-[9px]" style={{ color:'rgba(214,198,165,0.65)' }}>
+                <span ref={pctRef} className="font-mono text-[9px]" style={{ color:'#D6C6A5' }}>
                   0%
                 </span>
               </div>
@@ -230,8 +230,8 @@ export default function BootSequence({ onComplete }: Props) {
                     onClick={handleAccess}
                     className="font-mono text-[11px] tracking-[0.4em] uppercase px-10 py-3.5 border transition-all duration-400"
                     style={{
-                      color: 'rgba(214,198,165,0.7)',
-                      borderColor: 'rgba(214,198,165,0.2)',
+                      color: '#D6C6A5',
+                      borderColor: 'rgba(214,198,165,0.28)',
                       background: 'transparent',
                     }}
                     onMouseEnter={e => {
@@ -257,11 +257,11 @@ export default function BootSequence({ onComplete }: Props) {
 
           {/* Corner metadata */}
           <div className="absolute top-4 left-4 font-mono text-[8px] leading-relaxed"
-            style={{ color:'rgba(123,116,106,0.22)' }}>
+            style={{ color:'#D6C6A5' }}>
             SEC-CLEARANCE:4<br />NODE:ENCRYPTED<br />STATUS:ACTIVE
           </div>
           <div className="absolute bottom-4 right-4 font-mono text-[8px] leading-relaxed text-right"
-            style={{ color:'rgba(123,116,106,0.22)' }}>
+            style={{ color:'#D6C6A5' }}>
             LAT: 33.6844°N<br />LON: 73.0479°E<br />
             {new Date().toISOString().slice(0, 10)}
           </div>

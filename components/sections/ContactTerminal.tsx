@@ -67,18 +67,18 @@ export default function ContactTerminal() {
         <motion.div initial={{ opacity:0, y:30 }} animate={isInView ? { opacity:1, y:0 } : {}}
           transition={{ duration:1, ease:[0.16,1,0.3,1] }} className="mb-16">
           <p className="font-mono text-[10px] tracking-[0.4em] uppercase mb-4"
-            style={{ color:'rgba(184,165,138,0.65)' }}>
+            style={{ color:'#D6C6A5' }}>
             ◈ SECURE TRANSMISSION CHANNEL
           </p>
           <h2 className="font-serif italic text-5xl md:text-7xl text-ivory leading-none">
             Open a{' '}
             <span className="not-italic font-sans font-light tracking-tighter"
-              style={{ color:'rgba(214,198,165,0.6)' }}>
+              style={{ color:'#D6C6A5' }}>
               Line
             </span>
           </h2>
           <p className="mt-5 font-serif italic text-xl max-w-xl leading-relaxed"
-            style={{ color:'rgba(183,176,165,0.6)' }}>
+            style={{ color:'#D6C6A5' }}>
             Interested in building thoughtful systems together?
           </p>
         </motion.div>
@@ -127,13 +127,13 @@ export default function ContactTerminal() {
                     style={{ background:`radial-gradient(ellipse at 20% 50%, ${link.glow}, transparent 70%)` }} />
 
                   <Icon size={14} className="shrink-0 transition-colors duration-300 relative z-10"
-                    style={{ color:'rgba(214,198,165,0.35)' }}
+                    style={{ color:'#D6C6A5' }}
                     onMouseEnter={() => {}} // handled by parent
                   />
                   <div className="flex-1 relative z-10">
                     <div className="font-mono text-[8px] text-stone/30 tracking-widest mb-0.5">{link.label}</div>
                     <div className="font-mono text-[11px] tracking-wide transition-colors duration-300 group-hover:text-ivory"
-                      style={{ color:'rgba(183,176,165,0.65)' }}>
+                      style={{ color:'#D6C6A5' }}>
                       {link.value}
                     </div>
                   </div>
@@ -150,7 +150,7 @@ export default function ContactTerminal() {
               <div className="w-2 h-2 rounded-full animate-pulse"
                 style={{ background:'rgba(184,165,138,0.8)', boxShadow:'0 0 8px rgba(184,165,138,0.5)' }} />
               <span className="font-mono text-[10px] tracking-widest"
-                style={{ color:'rgba(184,165,138,0.65)' }}>
+                style={{ color:'#D6C6A5' }}>
                 AVAILABLE FOR NEW PROJECTS
               </span>
             </motion.div>
@@ -161,22 +161,22 @@ export default function ContactTerminal() {
             transition={{ delay:0.4, duration:1, ease:[0.16,1,0.3,1] }}>
             <div className="dossier-card rounded-sm overflow-hidden">
               {/* Title bar */}
-              <div className="flex items-center gap-2 px-5 py-3 border-b"
+                <div className="flex items-center gap-2 px-5 py-3 border-b"
                 style={{ borderColor:'rgba(214,198,165,0.06)', background:'rgba(21,21,21,0.8)' }}>
-                <div className="w-2.5 h-2.5 rounded-full" style={{ background:'rgba(122,30,30,0.6)' }} />
-                <div className="w-2.5 h-2.5 rounded-full" style={{ background:'rgba(166,58,58,0.4)' }} />
-                <div className="w-2.5 h-2.5 rounded-full" style={{ background:'rgba(214,198,165,0.15)' }} />
+                <div className="w-2.5 h-2.5 rounded-full" style={{ background:'#D6C6A5' }} />
+                <div className="w-2.5 h-2.5 rounded-full" style={{ background:'#D6C6A5' }} />
+                <div className="w-2.5 h-2.5 rounded-full" style={{ background:'#D6C6A5' }} />
                 <span className="font-mono text-[9px] text-stone/22 ml-2 tracking-widest">SECURE_TRANSMISSION.sh</span>
-                <Radio size={9} className="ml-auto animate-pulse" style={{ color:'rgba(214,198,165,0.2)' }} />
+                <Radio size={9} className="ml-auto animate-pulse" style={{ color:'#D6C6A5' }} />
               </div>
 
               <form onSubmit={handleSubmit} className="p-6 space-y-4">
                 {/* Prompt line */}
                 <div className="font-mono text-[11px] mb-3"
-                  style={{ color:'rgba(184,165,138,0.4)' }}>
-                  <span style={{ color:'rgba(122,30,30,0.6)' }}>$</span>{' '}
+                  style={{ color:'#D6C6A5' }}>
+                  <span style={{ color:'#D6C6A5' }}>$</span>{' '}
                   initiate_contact --encrypted --priority=HIGH
-                  <span className="cursor-blink ml-1" style={{ color:'rgba(214,198,165,0.5)' }}>█</span>
+                  <span className="cursor-blink ml-1" style={{ color:'#D6C6A5' }}>█</span>
                 </div>
 
                 {/* Name + Email */}
@@ -194,7 +194,7 @@ export default function ContactTerminal() {
                         borderColor: focused === field.id ? 'rgba(184,165,138,0.35)' : 'rgba(214,198,165,0.08)',
                         boxShadow:   focused === field.id ? '0 0 12px rgba(74,16,16,0.2)' : 'none',
                       }}>
-                      <span className="font-mono text-xs shrink-0" style={{ color:'rgba(122,30,30,0.5)' }}>›</span>
+                      <span className="font-mono text-xs shrink-0" style={{ color:'#D6C6A5' }}>›</span>
                       <input type={field.type} value={field.val}
                         onChange={e => field.set(e.target.value)}
                         onFocus={() => setFocused(field.id)}
@@ -232,10 +232,10 @@ export default function ContactTerminal() {
                   disabled={status === 'sending' || status === 'success'}
                   className="w-full flex items-center justify-center gap-3 font-mono text-[11px] tracking-[0.2em] uppercase py-3.5 border rounded-sm transition-all duration-500"
                   style={{
-                    color:        status === 'success' ? 'rgba(184,165,138,0.8)' : status === 'sending' ? 'rgba(184,165,138,0.5)' : 'rgba(184,165,138,0.7)',
-                    borderColor:  status === 'success' ? 'rgba(184,165,138,0.3)' : status === 'sending' ? 'rgba(184,165,138,0.15)' : 'rgba(184,165,138,0.2)',
-                    background:   status === 'sending' ? 'rgba(74,16,16,0.08)' : status === 'success' ? 'rgba(214,198,165,0.04)' : 'transparent',
-                    cursor:       status === 'sending' ? 'wait' : status === 'success' ? 'default' : 'pointer',
+                    color: '#D6C6A5',
+                    borderColor: 'rgba(214,198,165,0.16)',
+                    background: status === 'sending' ? 'rgba(74,16,16,0.08)' : status === 'success' ? 'rgba(214,198,165,0.04)' : 'transparent',
+                    cursor: status === 'sending' ? 'wait' : status === 'success' ? 'default' : 'pointer',
                   }}
                   onMouseEnter={e => {
                     if (status !== 'idle') return
@@ -282,9 +282,6 @@ export default function ContactTerminal() {
           style={{ borderTop:'1px solid rgba(214,198,165,0.06)' }}>
           <span className="font-mono text-[9px] text-stone/20 tracking-widest">
             HOORIA AMIR — CLASSIFIED ARCHIVE © {new Date().getFullYear()}
-          </span>
-          <span className="font-mono text-[9px] text-stone/15 tracking-widest">
-            NEXT.JS · FRAMER MOTION · GSAP · TAILWIND CSS
           </span>
         </motion.div>
       </div>

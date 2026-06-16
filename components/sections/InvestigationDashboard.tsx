@@ -61,13 +61,13 @@ export default function InvestigationDashboard() {
           initial={{ opacity:0, y:30 }} animate={isInView ? { opacity:1, y:0 } : {}}
           transition={{ duration:1, ease:[0.16,1,0.3,1] }} className="mb-14">
           <p className="font-mono text-[10px] tracking-[0.4em] uppercase mb-3"
-            style={{ color:'rgba(184,165,138,0.7)' }}>
+            style={{ color:'#D6C6A5' }}>
             ◈ CAPABILITY ARCHIVE — ACCESS GRANTED
           </p>
           <h2 className="font-serif italic text-5xl md:text-7xl text-ivory leading-none">
             Case{' '}
             <span className="not-italic font-sans font-light tracking-tight"
-              style={{ color:'rgba(214,198,165,0.6)' }}>
+              style={{ color:'#D6C6A5' }}>
               Archive
             </span>
           </h2>
@@ -102,11 +102,11 @@ export default function InvestigationDashboard() {
                     </div>
 
                     <h3 className="font-sans font-semibold text-sm tracking-[0.15em] uppercase mb-3 transition-colors duration-300"
-                      style={{ color: isOpen ? '#F3EEE6' : 'rgba(243,238,230,0.75)' }}>
+                      style={{ color: isOpen ? '#F3EEE6' : '#D6C6A5' }}>
                       {log.label}
                     </h3>
                     <p className="font-serif italic text-sm leading-relaxed mb-4"
-                      style={{ color:'rgba(183,176,165,0.55)' }}>
+                      style={{ color:'#D6C6A5' }}>
                       {log.desc}
                     </p>
 

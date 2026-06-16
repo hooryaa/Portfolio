@@ -95,7 +95,7 @@ export default function HiddenClues() {
             </span>
           </h2>
           <p className="mt-4 font-serif italic text-lg max-w-lg leading-relaxed"
-            style={{ color:'rgba(183,176,165,0.5)' }}>
+            style={{ color:'#D6C6A5' }}>
             This archive rewards the curious. Explore carefully.
           </p>
           <p className="mt-2 font-mono text-[9px] text-stone/25 tracking-widest">
@@ -154,9 +154,9 @@ export default function HiddenClues() {
                           className="absolute z-20 w-56 bottom-8 left-1/2 -translate-x-1/2 dossier-card rounded-sm p-3"
                           style={{ borderColor:'rgba(166,58,58,0.3)' }}>
                           <p className="font-mono text-[8px] tracking-widest mb-1.5"
-                            style={{ color:'rgba(166,58,58,0.8)' }}>DECRYPTED</p>
+                             style={{ color:'#D6C6A5' }}>DECRYPTED</p>
                           <p className="font-serif italic text-xs leading-relaxed"
-                            style={{ color:'rgba(183,176,165,0.75)' }}>{clue.secret}</p>
+                             style={{ color:'#D6C6A5' }}>{clue.secret}</p>
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -178,7 +178,7 @@ export default function HiddenClues() {
                     <span style={{ color:'#D6C6A5', fontSize:'14px' }}>★</span>
                     <span className="font-mono text-[9px] tracking-widest" style={{ color:'#D6C6A5' }}>KONAMI CODE ACCEPTED</span>
                   </div>
-                  <p className="font-serif italic text-sm" style={{ color:'rgba(183,176,165,0.65)' }}>
+                  <p className="font-serif italic text-sm" style={{ color:'#D6C6A5' }}>
                     &ldquo;I respect you for trying that. Genuinely.&rdquo;
                   </p>
                 </motion.div>

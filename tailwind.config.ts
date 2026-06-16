@@ -30,9 +30,9 @@ const config: Config = {
         'slate':     '#3A506B',
         'bluegray':  '#5C677D',
         // Text
-        'ivory':     '#F3EEE6',
-        'dustgray':  '#B7B0A5',
-        'stone':     '#7B746A',
+        'ivory':     '#D6C6A5',
+        'dustgray':  '#D6C6A5',
+        'stone':     '#D6C6A5',
         'terminal':  '#C6BAA8',
       },
       fontFamily: {
@@ -41,9 +41,9 @@ const config: Config = {
         mono:  ['var(--font-space-mono)', 'monospace'],
       },
       fontSize: {
-        'massive': 'clamp(3.2rem, 10vw, 12rem)',
-        'huge':    'clamp(2rem, 5.5vw, 6.5rem)',
-        'display': 'clamp(1.5rem, 3vw, 4rem)',
+        'massive': 'clamp(3.4rem, 10vw, 13rem)',
+        'huge':    'clamp(2.2rem, 5.5vw, 7rem)',
+        'display': 'clamp(1.6rem, 3vw, 4.6rem)',
       },
       animation: {
         'grain':      'grain 8s steps(10) infinite',

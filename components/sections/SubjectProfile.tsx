@@ -97,7 +97,7 @@ export default function SubjectProfile() {
                     {[['ROLE','Software Engineer'],['STATUS','Active'],['LOCATION','Lahore, Pakistan'],['FOCUS','AI + Full-Stack Systems']].map(([l,v]) => (
                       <div key={l}>
                         <div className="evidence-label">{l}</div>
-                        <div className="font-mono text-[11px] mt-0.5" style={{ color:'rgba(183,176,165,0.75)' }}>{v}</div>
+                        <div className="font-mono text-[11px] mt-0.5" style={{ color:'#D6C6A5' }}>{v}</div>
                       </div>
                     ))}
                   </div>
@@ -111,13 +111,13 @@ export default function SubjectProfile() {
                   {unlocked.size === REDACTED.length && (
                     <motion.span initial={{ opacity:0, scale:0.8 }} animate={{ opacity:1, scale:1 }}
                       className="font-mono text-[8px] tracking-widest"
-                      style={{ color:'rgba(214,198,165,0.7)' }}>
+                      style={{ color:'#D6C6A5' }}>
                       FULLY DECRYPTED
                     </motion.span>
                   )}
                 </div>
                 <p className="font-serif italic text-sm leading-relaxed mb-4"
-                  style={{ color:'rgba(183,176,165,0.72)' }}>
+                  style={{ color:'#D6C6A5' }}>
                   Software Engineer based in Lahore, Pakistan, specializing in{' '}
                   <button onClick={() => toggle('r1')}
                     className={`font-serif italic text-sm rounded-sm px-0.5 transition-all duration-500 cursor-pointer ${!unlocked.has('r1') ? 'redacted' : ''}`}
@@ -138,11 +138,11 @@ export default function SubjectProfile() {
                 <p className="font-mono text-[8px] text-stone/25 tracking-widest">↑ CLICK REDACTED TEXT TO DECRYPT</p>
                 <div className="mt-6 space-y-3">
                   <p className="font-serif italic text-sm leading-relaxed"
-                    style={{ color:'rgba(183,176,165,0.65)' }}>
+                    style={{ color:'#D6C6A5' }}>
                     Experienced in developing intelligent applications, data platforms, full-stack systems, and immersive user experiences using modern technologies across web development, automation, and analytics.
                   </p>
                   <p className="font-serif italic text-sm leading-relaxed"
-                    style={{ color:'rgba(183,176,165,0.60)' }}>
+                    style={{ color:'#D6C6A5' }}>
                     My work spans AI-assisted development tools, business intelligence systems, property technology platforms, productivity applications, and interactive narrative experiences.
                   </p>
                 </div>
@@ -181,7 +181,7 @@ export default function SubjectProfile() {
                   <div className="w-px h-8 shrink-0 mt-1 transition-all duration-500"
                     style={{ background:'linear-gradient(to bottom, rgba(166,58,58,0.5), transparent)' }} />
                   <p className="font-serif italic text-sm transition-colors duration-400"
-                    style={{ color:'rgba(183,176,165,0.6)' }}>
+                    style={{ color:'#D6C6A5' }}>
                     {note}
                   </p>
                 </motion.div>
@@ -192,9 +192,9 @@ export default function SubjectProfile() {
           {/* ── RIGHT: Skills ── */}
           <motion.div initial={{ opacity:0, x:40 }} animate={isInView ? { opacity:1, x:0 } : {}}
             transition={{ delay:0.2, duration:1.2, ease:[0.16,1,0.3,1] }}>
-            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center justify-between mb-6">
               <p className="font-mono text-[10px] tracking-[0.4em] uppercase"
-                style={{ color:'rgba(184,165,138,0.7)' }}>
+                style={{ color:'#D6C6A5' }}>
                 ◈ TECHNICAL CAPABILITY REPORT
               </p>
               <AlertTriangle size={10} style={{ color:'rgba(166,58,58,0.4)' }} />
@@ -224,7 +224,7 @@ export default function SubjectProfile() {
                         style={{
                           background:    hoveredSkill === skill ? 'rgba(122,30,30,0.12)' : 'rgba(21,21,21,0.7)',
                           borderColor:   hoveredSkill === skill ? 'rgba(166,58,58,0.45)' : 'rgba(214,198,165,0.1)',
-                          color:         hoveredSkill === skill ? group.accent : 'rgba(183,176,165,0.65)',
+                          color:         hoveredSkill === skill ? group.accent : '#D6C6A5',
                           boxShadow:     hoveredSkill === skill ? '0 0 10px rgba(122,30,30,0.2)' : 'none',
                         }}>
                         {skill}

@@ -109,7 +109,7 @@ function CaseFileModal({ project, onClose }: { project: typeof PROJECTS[number];
                 </span>
               </div>
               <h3 className="font-sans font-bold text-3xl text-ivory tracking-tight">{project.title}</h3>
-              <p className="font-mono text-[11px] text-stone/50 tracking-wide mt-1">{project.subtitle}</p>
+              <p className="font-mono text-[11px] tracking-wide mt-1" style={{ color:'#D6C6A5' }}>{project.subtitle}</p>
             </div>
           </div>
 
@@ -129,7 +129,7 @@ function CaseFileModal({ project, onClose }: { project: typeof PROJECTS[number];
               <a href={project.github} target="_blank" rel="noopener noreferrer"
                 onClick={e => e.stopPropagation()}
                 className="font-mono text-[10px] uppercase tracking-[0.35em] px-3 py-2 border rounded-sm transition-colors duration-300"
-                style={{ color:'rgba(214,198,165,0.9)', borderColor:'rgba(214,198,165,0.18)', background:'rgba(21,21,21,0.9)' }}>
+                style={{ color:'#D6C6A5', borderColor:'rgba(214,198,165,0.18)', background:'rgba(21,21,21,0.9)' }}>
                 VIEW SOURCE
               </a>
             )}
@@ -145,7 +145,7 @@ function CaseFileModal({ project, onClose }: { project: typeof PROJECTS[number];
 
           {/* Description */}
           <p className="font-serif text-sm leading-relaxed mb-6"
-            style={{ color:'rgba(183,176,165,0.75)' }}>
+            style={{ color:'#D6C6A5' }}>
             {project.description}
           </p>
 
@@ -167,9 +167,9 @@ function CaseFileModal({ project, onClose }: { project: typeof PROJECTS[number];
             {project.github && project.github !== '#' && (
               <a href={project.github} target="_blank" rel="noopener noreferrer"
                 className="flex items-center gap-2 font-mono text-[11px] px-4 py-2.5 rounded-sm border transition-all duration-300"
-                style={{ color:'rgba(183,176,165,0.6)', borderColor:'rgba(214,198,165,0.15)' }}
+                style={{ color:'#D6C6A5', borderColor:'rgba(214,198,165,0.15)' }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#F3EEE6'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(214,198,165,0.4)' }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'rgba(183,176,165,0.6)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(214,198,165,0.15)' }}>
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#D6C6A5'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(214,198,165,0.15)' }}>
                 <Github size={12} />VIEW SOURCE
               </a>
             )}
@@ -203,7 +203,7 @@ export default function EvidenceWall() {
         style={{ background:'rgba(20,33,61,0.3)' }} />
       <div className="glow-blob w-80 h-80 absolute bottom-0 right-0"
         style={{ background:'rgba(74,16,16,0.2)' }} />
-      <div className="absolute inset-0 investigation-grid opacity-15 pointer-events-none" />
+      <div className="absolute inset-0 investigation-grid opacity-30 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
