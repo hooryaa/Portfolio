@@ -69,7 +69,7 @@ export default function HiddenClues() {
   }
 
   return (
-    <section ref={sectionRef}
+    <section ref={sectionRef} id="hidden-clues"
       className="relative py-28 md:py-40 overflow-hidden min-h-screen"
       style={{ background:'#1A0F10' }}
       aria-label="Hidden clues and easter eggs">

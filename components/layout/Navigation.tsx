@@ -5,11 +5,14 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Shield } from 'lucide-react'
 
 const NAV_ITEMS = [
-  { label:'ARCHIVE',  href:'archive',  code:'01' },
-  { label:'EVIDENCE', href:'evidence', code:'02' },
-  { label:'SUBJECT',  href:'subject',  code:'03' },
-  { label:'TIMELINE', href:'timeline', code:'04' },
-  { label:'TERMINAL', href:'terminal', code:'05' },
+  { label:'ARCHIVE',     href:'archive',      code:'01' },
+  { label:'EVIDENCE',    href:'evidence',     code:'02' },
+  { label:'SUBJECT',     href:'subject',      code:'03' },
+  { label:'SKILLS',      href:'skills',       code:'04' },
+  { label:'TIMELINE',    href:'timeline',     code:'05' },
+  { label:'PHILOSOPHY',  href:'philosophy',   code:'06' },
+  { label:'HIDDEN CLUES',href:'hidden-clues', code:'07' },
+  { label:'TERMINAL',    href:'terminal',     code:'08' },
 ]
 
 export default function Navigation() {
@@ -17,49 +20,94 @@ export default function Navigation() {
   const [scrolled, setScrolled] = useState(false)
   const [active,  setActive]  = useState('')
 
+  // Keep a ref in sync with `active` to avoid stale closures in handlers
+  const activeRef = useRef('')
+
   // Cache section offsets — recomputed only on resize, not every scroll
-  const offsets = useRef<{ id: string; top: number }[]>([])
   const scrolledRef = useRef(false)
 
-  const updateOffsets = () => {
-    offsets.current = NAV_ITEMS.map(n => ({
-      id:  n.href,
-      top: document.getElementById(n.href)?.offsetTop ?? 0,
-    }))
-  }
-
   useEffect(() => {
-    updateOffsets()
-    window.addEventListener('resize', updateOffsets, { passive: true })
-
+    // Update scrolled state on scroll
     const onScroll = () => {
       const y = window.scrollY
-      // Scroll state — compare against ref to avoid extra renders
       const nowScrolled = y > 80
       if (nowScrolled !== scrolledRef.current) {
         scrolledRef.current = nowScrolled
         setScrolled(nowScrolled)
       }
-      // Active section — cheap array scan, no DOM reads
-      const threshold = y + window.innerHeight / 3
-      for (let i = offsets.current.length - 1; i >= 0; i--) {
-        if (offsets.current[i].top <= threshold) {
-          setActive(offsets.current[i].id)
-          break
-        }
-      }
     }
     window.addEventListener('scroll', onScroll, { passive: true })
+
+    // Robust active-detection: compute which section center is nearest viewport center
+    const ids = NAV_ITEMS.map(n => n.href)
+
+    const updateActiveByCenter = () => {
+      const els = ids.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[]
+      if (!els.length) return
+      const winCenter = window.innerHeight / 2
+      let nearest: HTMLElement | null = null
+      let minDist = Infinity
+      els.forEach(el => {
+        const r = el.getBoundingClientRect()
+        const center = r.top + r.height / 2
+        const dist = Math.abs(center - winCenter)
+        if (dist < minDist) { minDist = dist; nearest = el }
+      })
+      if (nearest && activeRef.current !== nearest.id) {
+        activeRef.current = nearest.id
+        setActive(nearest.id)
+      }
+    }
+
+    // Call once to init
+    updateActiveByCenter()
+
+    // Add listeners to keep active updated
+    window.addEventListener('scroll', updateActiveByCenter, { passive: true })
+    window.addEventListener('resize', updateActiveByCenter, { passive: true })
+
+    // IntersectionObserver as a lightweight trigger to recalc when elements cross threshold
+    const io = new IntersectionObserver(() => updateActiveByCenter(), { root: null, threshold: [0, 0.25, 0.5], rootMargin: '-40% 0px -40% 0px' })
+    ids.forEach(id => { const el = document.getElementById(id); if (el) io.observe(el) })
+
+    // Cleanup
     return () => {
       window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', updateOffsets)
+      window.removeEventListener('scroll', updateActiveByCenter)
+      window.removeEventListener('resize', updateActiveByCenter)
+      io.disconnect()
     }
   }, [])
 
+  // Keep activeRef updated whenever active state changes
+  useEffect(() => { activeRef.current = active }, [active])
+
   const go = (id: string) => {
     setOpen(false)
+    // push hash so browser history reflects the current section
+    try { history.pushState(null, '', `#${id}`) } catch {}
+    // highlight immediately
+    activeRef.current = id
+    setActive(id)
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   }
+
+  // Sync when user navigates browser history (back/forward) or types hash
+  useEffect(() => {
+    const onHash = () => {
+      const id = location.hash.replace('#', '')
+      if (id) {
+        activeRef.current = id
+        setActive(id)
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+    window.addEventListener('hashchange', onHash)
+    window.addEventListener('popstate', onHash)
+    // initial hash
+    if (location.hash) onHash()
+    return () => { window.removeEventListener('hashchange', onHash); window.removeEventListener('popstate', onHash) }
+  }, [])
 
   return (
     <>

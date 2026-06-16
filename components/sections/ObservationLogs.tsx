@@ -62,7 +62,7 @@ export default function ObservationLogs() {
   const inView    = useInView(headerRef, { once:true, margin:'-60px' })
 
   return (
-    <section className="relative py-28 md:py-40 overflow-hidden" aria-label="Observation logs"
+    <section id="philosophy" className="relative py-28 md:py-40 overflow-hidden" aria-label="Observation logs"
       style={{ background:'#151515' }}>
       <div className="absolute inset-0 investigation-grid opacity-12 pointer-events-none" />
       <div className="glow-blob w-[500px] h-[400px] absolute top-1/2 -translate-y-1/2 left-0"

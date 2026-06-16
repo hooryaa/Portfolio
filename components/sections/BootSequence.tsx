@@ -18,8 +18,8 @@ export default function BootSequence({ onComplete }: Props) {
   // Three clear phases: 'boot' (typing), 'id' (name reveal), 'exit' (fade out)
   const [phase,    setPhase]    = useState<'boot' | 'id' | 'exit'>('boot')
   const [lines,    setLines]    = useState<string[]>([])
-  const [lineIdx,  setLineIdx]  = useState(0)
-  const [charIdx,  setCharIdx]  = useState(0)
+  const linesRef = useRef<string[]>([])
+  const activeSpanRef = useRef<HTMLSpanElement|null>(null)
 
   // Progress bar and pct label driven by DOM refs — zero re-renders
   const barRef  = useRef<HTMLDivElement>(null)
@@ -47,39 +47,54 @@ export default function BootSequence({ onComplete }: Props) {
     return () => cancelAnimationFrame(rafBar.current)
   }, [])
 
-  // ── Typing animation ────────────────────────────────────
+  // ── Typing animation (rAF-based, minimal React updates) ───
   useEffect(() => {
-    // Only run during boot phase
     if (phase !== 'boot') return
 
-    // All lines done → transition to id reveal
-    if (lineIdx >= BOOT_LINES.length) {
-      const t = setTimeout(() => setPhase('id'), 700)
-      return () => clearTimeout(t)
+    let raf = 0
+    let line = linesRef.current.length // start from any already-completed lines
+    let char = 0
+    let lastTs = 0
+    const charInterval = 24 // ms per character
+    const linePause = 320 // ms after line completes
+    let nextAvailable = 0
+
+    const step = (ts: number) => {
+      if (!lastTs) lastTs = ts
+      if (ts < nextAvailable) {
+        raf = requestAnimationFrame(step); return
+      }
+
+      if (line >= BOOT_LINES.length) {
+        // finished all lines
+        setTimeout(() => setPhase('id'), 700)
+        return
+      }
+
+      const current = BOOT_LINES[line]
+      if (ts - lastTs >= charInterval) {
+        lastTs = ts
+        if (char < current.length) {
+          char++
+          // update active typing DOM directly to avoid state churn
+          if (activeSpanRef.current) activeSpanRef.current.textContent = current.slice(0, char) + '\u2588'
+        } else {
+          // complete line
+          linesRef.current = [...linesRef.current, current]
+          setLines(linesRef.current)
+          // clear active span
+          if (activeSpanRef.current) activeSpanRef.current.textContent = ''
+          line++
+          char = 0
+          nextAvailable = ts + linePause
+        }
+      }
+      raf = requestAnimationFrame(step)
     }
 
-    const currentLine = BOOT_LINES[lineIdx]
-
-    if (charIdx < currentLine.length) {
-      // Type next character
-      const t = setTimeout(() => {
-        setLines(prev => {
-          const updated = [...prev]
-          updated[lineIdx] = currentLine.slice(0, charIdx + 1)
-          return updated
-        })
-        setCharIdx(c => c + 1)
-      }, 24)
-      return () => clearTimeout(t)
-    } else {
-      // Line complete — move to next
-      const t = setTimeout(() => {
-        setLineIdx(l => l + 1)
-        setCharIdx(0)
-      }, 320)
-      return () => clearTimeout(t)
-    }
-  }, [phase, lineIdx, charIdx])
+    raf = requestAnimationFrame(step)
+    return () => cancelAnimationFrame(raf)
+  }, [phase])
 
   // ── Exit handler ─────────────────────────────────────────
   const handleAccess = () => {
@@ -147,19 +162,18 @@ export default function BootSequence({ onComplete }: Props) {
 
               {/* Lines */}
               <div className="space-y-1.5" style={{ minHeight: '132px' }}>
-                {lines.slice(0, lineIdx).map((line, i) => (
+                {lines.map((line, i) => (
                   <div key={`l${i}`} className="flex items-start gap-2">
                     <span className="font-mono text-xs shrink-0" style={{ color:'#D6C6A5' }}>›</span>
                     <span className="font-mono text-[12px]" style={{ color:'#D6C6A5' }}>{line}</span>
                   </div>
                 ))}
                 {/* Active typing line with cursor */}
-                {phase === 'boot' && lineIdx < BOOT_LINES.length && (
+                {phase === 'boot' && lines.length < BOOT_LINES.length && (
                   <div className="flex items-start gap-2">
                     <span className="font-mono text-xs shrink-0" style={{ color:'#D6C6A5' }}>›</span>
                     <span className="font-mono text-[12px]" style={{ color:'#D6C6A5' }}>
-                      {lines[lineIdx] ?? BOOT_LINES[lineIdx] ?? ''}
-                      <span className="cursor-blink" style={{ color:'#D6C6A5' }}>█</span>
+                      <span ref={activeSpanRef} />
                     </span>
                   </div>
                 )}

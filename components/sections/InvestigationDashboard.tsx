@@ -48,7 +48,7 @@ export default function InvestigationDashboard() {
   const [active, setActive] = useState<string|null>(null)
 
   return (
-    <section ref={sectionRef}
+    <section ref={sectionRef} id="skills"
       className="relative py-24 md:py-36 overflow-hidden"
       style={{ background:'#151515' }}
     >

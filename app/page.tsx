@@ -72,6 +72,17 @@ export default function Home() {
   const [booted, setBooted] = useState(false)
   useLenis()
 
+  // When boot completes, ensure the first visible section is Archive
+  useEffect(() => {
+    if (!booted) return
+    try {
+      if (!location.hash) {
+        history.replaceState(null, '', '#archive')
+        document.getElementById('archive')?.scrollIntoView({ behavior: 'auto' })
+      }
+    } catch {}
+  }, [booted])
+
   return (
     <>
       {/* Boot overlay — sits on top at z-[200], unmounts after exit animation */}
